@@ -30,7 +30,7 @@ LABEL       org.opencontainers.image.licenses=MIT
 RUN 		apt-get update -y \
  			&& apt-get install -y curl ca-certificates openssl git tar sqlite3 fontconfig libfreetype6 tzdata iproute2 libstdc++6 webp \
  			&& useradd -d /home/container -m container\
-			&& curl -fsSL https://deb.nodesource.com/setup_20.x | bash - &&\
+			&& curl -fsSL https://deb.nodesource.com/setup_20.x | bash -\
 			&& apt-get install -y nodejs
 
 USER        container

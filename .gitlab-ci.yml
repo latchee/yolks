@@ -1,0 +1,41 @@
+image: $CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX/docker:latest
+
+stages:
+    - build
+    - test
+    - release
+
+variables:
+    TEST_IMAGE: $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/$CI_PROJECT_NAME:$CI_COMMIT_REF_NAME
+    RELEASE_IMAGE: $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/$CI_PROJECT_NAME:latest
+
+before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
+build:
+    stage: build
+    script: 
+        - docker build 
+           --pull
+           --build-arg GITLAB_DEPENDENCY_PROXY=${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}
+           -t $TEST_IMAGE .
+        - docker push $TEST_IMAGE
+        - docker image rm -f $TEST_IMAGE
+
+test:
+    stage: test
+    script:
+        - docker pull $TEST_IMAGE
+        - docker run $TEST_IMAGE uname -a
+        - docker rm $(docker ps --filter status=exited -q)
+        - docker image rm -f $TEST_IMAGE
+ 
+release:
+    stage: release
+    script:
+        - docker pull $TEST_IMAGE
+        - docker tag $TEST_IMAGE $RELEASE_IMAGE
+        - docker push $RELEASE_IMAGE
+        - docker image rm -f $RELEASE_IMAGE
+    only:
+        - main

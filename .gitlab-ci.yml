@@ -27,6 +27,8 @@ test:
     script:
         - docker pull $TEST_IMAGE
         - docker run $TEST_IMAGE uname -a
+        - docker run $TEST_IMAGE java -version
+        - docker run $TEST_IMAGE node -v
         - docker rm $(docker ps --filter status=exited -q)
         - docker image rm -f $TEST_IMAGE
  

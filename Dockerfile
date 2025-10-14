@@ -7,7 +7,7 @@ LABEL       org.opencontainers.image.licenses=MIT
 
 RUN 		apt-get update -y\
  			&& apt-get install -y curl ca-certificates openssl git tar sqlite3 fontconfig libfreetype6 tzdata iproute2 libstdc++6 webp nodejs\
-			&& curl -fsSL https://deb.nodesource.com/setup_20.x | bash -\
+			&& curl -fsSL https://deb.nodesource.com/setup_24.x | bash -\
 			&& apt-get install -y nodejs\
  			&& useradd --home /home/container --create-home container\
 			&& curl --output /home/container/mcsleepingserverstarter-linux --location https://github.com/vincss/mcsleepingserverstarter/releases/latest/download/mcsleepingserverstarter-linux-x64\

@@ -1,4 +1,4 @@
-FROM        --platform=linux/amd64 openjdk:26-slim-trixie
+FROM        --platform=linux/amd64 openjdk:27-slim-trixie
 
 LABEL       author="Latchee" maintainer="mail@latchee.com"
 
